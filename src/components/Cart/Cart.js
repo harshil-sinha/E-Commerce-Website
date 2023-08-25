@@ -1,23 +1,23 @@
-// import axios from "axios";
-import React, { useContext } from "react";
-// import AuthContext from "../../store/auth-context";
+import axios from "axios";
+import React, { useContext , useEffect} from "react";
+import AuthContext from "../../store/auth-context";
 import CartContext from "../../store/cart-context";
 
 import "./Cart.css";
 
 const Cart = (props) => {
   const cartCtx = useContext(CartContext);
-  // const authCtx = useContext(AuthContext);
+  const authCtx = useContext(AuthContext);
 
   const removeItemHandler = (product) => {
     cartCtx.removeItem(product);
     localStorage.removeItem(product.id);
 
-    // const email = authCtx.emailid;
+    const email = authCtx.emailid;
 
-    // axios.delete(
-    //   `https://crudcrud.com/api/0a694046be5644e8be71dfb33e25d1e1/cart${email}/${product._id}`
-    // );
+    axios.delete(
+      `https://crudcrud.com/api/4fe7280e0ef2404792e57c496a352c17/cart${email}/${product._id}`
+    );
   };
 
 //Storing in local storage  
@@ -33,17 +33,17 @@ const Cart = (props) => {
   // const cartList = obj.map((product) => {
 
 
-    // const email = authCtx.emailid;
-
-    // useEffect(() => {
-    //   axios
-    //     .get(
-    //       `https://crudcrud.com/api/0a694046be5644e8be71dfb33e25d1e1/cart${email}`
-    //     )
-    //     .then((res) => {
-    //       return cartCtx.crudlist(res.data);
-    //     });
-    // }, []);
+    
+    useEffect(() => {
+      const email = authCtx.emailid;
+      axios
+        .get(
+          `https://crudcrud.com/api/4fe7280e0ef2404792e57c496a352c17/cart${email}`
+        )
+        .then((res) => {
+          return cartCtx.crudlist(res.data);
+        });
+    }, [authCtx.emailid, cartCtx]);
 
     // const crudList = cartCtx.cruditems.map((product) => {
   
