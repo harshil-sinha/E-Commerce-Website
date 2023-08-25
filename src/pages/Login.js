@@ -18,10 +18,10 @@ const Login = () => {
     let url;
     if (isLogin) {
       url =
-        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDW2V-IWOx4GO9rM2bB-0tFWAAeZY4WZ1o";
+        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCjw8WuNAkXr0BBOE6XGqOTXr96hh9g0iM";
     } else {
       url =
-        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDW2V-IWOx4GO9rM2bB-0tFWAAeZY4WZ1o";
+        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCjw8WuNAkXr0BBOE6XGqOTXr96hh9g0iM";
     }
     fetch(url, {
       method: "POST",
@@ -65,7 +65,7 @@ const Login = () => {
           {isLogin ? "Login" : "create new account"}
         </button>
         <button type="button" className="switch-btn" onClick={switchHandler}>
-          {isLogin ? "Create ne account" : "Login with existing account"}
+          {isLogin ? "Create new account" : "Login with existing account"}
         </button>
       </form>
     </div>
