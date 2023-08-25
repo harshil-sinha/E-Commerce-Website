@@ -1,63 +1,44 @@
-// import axios from "axios";
-import React, { useContext } from "react";
-import { Link } from "react-router-dom";
-// import AuthContext from "../store/auth-context";
-import CartContext from "../store/cart-context";
-import "./AlbumList.css";
+import React, { useState } from "react";
 
-const AlbumList = (props) => {
-  const cartCtx = useContext(CartContext);
-  // const authCtx = useContext(AuthContext);
-  const addToCart = (e) => {
-    e.preventDefault();
-    const obj = {
-      id: props.id,
-      title: props.title,
-      imageUrl: props.image,
-      quantity: props.quantity,
-      price: props.price,
-    };
-    localStorage.setItem(props.id, JSON.stringify(obj));
-    cartCtx.addItem({
-      id: props.id,
-      title: props.title,
-      imageUrl: props.image,
-      quantity: props.quantity,
-      price: props.price,
-    });
+const AuthContext = React.createContext({
+  token: "",
+  isLoggedIn: false,
+  login: (token) => {},
+  email:()=>{},
+  emailid:'',
+  logout:()=>{}
+});
 
-    // let email = authCtx.emailid;
-
-    // axios.post(
-    //   `https://crudcrud.com/api/8805f3f330634e7a9cf2e33e8239d586/cart${email}`,
-    //   {
-    //     id: props.id,
-    //     title: props.title,
-    //     imageUrl: props.image,
-    //     quantity: props.quantity,
-    //     price: props.price,
-    //   }
-    // );
+export const AuthContextProvider = (props) => {
+  const initialState = localStorage.getItem("token");
+  const [token, setToken] = useState(initialState);
+  const [email,setEmail] = useState('')
+  const userisLoggedIn = !!token;
+  const loginHandler = (token) => {
+    setToken(token);
+    localStorage.setItem("token", token);
   };
 
-  let url = `/store/${props.id}`;
+  const logoutHandler=()=>{
+    localStorage.clear()
+    setToken(null)
+  }
 
+  const emailHandler=(email)=>{
+    const clean = email.replace(/[^a-zA-Z0-9]/g,'')
+    setEmail(clean)
+  }
+  const values = {
+    token: token,
+    isLoggedIn: userisLoggedIn,
+    login: loginHandler,
+    email:emailHandler,
+    emailid:email,
+    logout:logoutHandler
+  };
   return (
-    <div className="products">
-      <div>
-        <h2>{props.title}</h2>;
-        <Link to={url}>
-          <img src={props.image} alt={props.title} />
-        </Link>
-        <div className="cartlist">
-          <h3>${props.price}</h3>
-          <button onClick={addToCart} className="button">
-            ADD TO CART
-          </button>
-        </div>
-      </div>
-    </div>
+    <AuthContext.Provider value={values}>{props.children}</AuthContext.Provider>
   );
 };
 
-export default AlbumList;
+export default AuthContext;
